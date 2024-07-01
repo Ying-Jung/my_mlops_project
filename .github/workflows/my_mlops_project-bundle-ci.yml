@@ -15,7 +15,7 @@ defaults:
 
 env:
   STAGING_WORKSPACE_TOKEN: ${{ secrets.STAGING_WORKSPACE_TOKEN }}
-  PROD_WORKSPACE_TOKEN: ${{ secrets.PROD_WORKSPACE_TOKEN }}
+  PROD_WORKSPACE_TOKEN: ${{ secrets.STAGING_WORKSPACE_TOKEN }}
 
 jobs:
   staging:
