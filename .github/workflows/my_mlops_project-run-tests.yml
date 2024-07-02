@@ -4,7 +4,7 @@ on:
   pull_request:
     paths:
       - 'my_mlops_project/**'
-      - '.github/workflows/my_mlops_project-run-tests.yml'
+      - '.gitlab/workflows/my_mlops_project-run-tests.yml'
 
 defaults:
   run:

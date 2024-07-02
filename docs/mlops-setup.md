@@ -4,7 +4,7 @@
 ## Table of contents
 * [Intro](#intro)
 * [Create a hosted Git repo](#create-a-hosted-git-repo)
-* [Configure CI/CD](#configure-cicd---github-actions)
+* [Configure CI/CD](#configure-cicd---gitlab-actions)
 * [Merge PR with initial ML code](#merge-a-pr-with-your-initial-ml-code)
 * [Create release branch](#create-release-branch)
 
@@ -37,7 +37,7 @@ git commit -m "Adding project README"
 git push upstream main
 ```
 
-## Configure CI/CD - GitHub Actions
+## Configure CI/CD - gitlab Actions
 
 ### Prerequisites
 * You must be an account admin to add service principals to the account.
@@ -65,7 +65,7 @@ For your convenience, we also have a [Terraform module](https://registry.terrafo
 If the created project uses **Unity Catalog**, we expect a catalog to exist with the name of the deployment target by default. 
 For example, if the deployment target is dev, we expect a catalog named dev to exist in the workspace. 
 If you want to use different catalog names, please update the target names declared in the[my_mlops_project/databricks.yml](../my_mlops_project/databricks.yml) file.
-If changing the staging, prod, or test deployment targets, you'll also need to update the workflows located in the .github/workflows directory.
+If changing the staging, prod, or test deployment targets, you'll also need to update the workflows located in the .gitlab/workflows directory.
 
 The SP must have proper permission in each respective environment and the catalog for the environments.
 
@@ -88,23 +88,23 @@ i.e. for each environment
 
 After creating the service principals and adding them to the respective staging and prod workspaces, follow
 [Manage access tokens for a service principal](https://docs.databricks.com/administration-guide/users-groups/service-principals.html#manage-access-tokens-for-a-service-principal)
-to get service principal tokens for staging and prod workspace and follow [Encrypted secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets)
-to add the secrets to GitHub:
+to get service principal tokens for staging and prod workspace and follow [Encrypted secrets](https://docs.gitlab.com/en/actions/security-guides/encrypted-secrets)
+to add the secrets to gitlab:
 - `STAGING_WORKSPACE_TOKEN` : service principal token for staging workspace
 - `PROD_WORKSPACE_TOKEN` : service principal token for prod workspace
-- `WORKFLOW_TOKEN` : [Github token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic) with workflow permissions. This secret is needed for the Deploy CI/CD Workflow.
+- `WORKFLOW_TOKEN` : [gitlab token](https://docs.gitlab.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic) with workflow permissions. This secret is needed for the Deploy CI/CD Workflow.
 
-Next, be sure to update the [Workflow Permissions](https://docs.github.com/en/actions/security-guides/automatic-token-authentication#modifying-the-permissions-for-the-github_token) section under Repo Settings > Actions > General:
+Next, be sure to update the [Workflow Permissions](https://docs.gitlab.com/en/actions/security-guides/automatic-token-authentication#modifying-the-permissions-for-the-gitlab_token) section under Repo Settings > Actions > General:
 - Allow `Read and write permissions`,
 - Allow workflows to be able to open pull requests (PRs).
 
 
 ### Setting up CI/CD workflows
-After setting up authentication for CI/CD, you can now set up CI/CD workflows. We provide a [Deploy CICD workflow](../.github/workflows/deploy-cicd.yml) that can be used to generate the other CICD workflows mentioned below for projects. 
+After setting up authentication for CI/CD, you can now set up CI/CD workflows. We provide a [Deploy CICD workflow](../.gitlab/workflows/deploy-cicd.yml) that can be used to generate the other CICD workflows mentioned below for projects. 
 This workflow is manually triggered with `project_name` as parameter. This workflow will need to be triggered for each project to set up its set of CI/CD workflows that can be used to deploy ML resources and run ML jobs in the staging and prod workspaces. 
-These workflows will be defined under `.github/workflows`.
+These workflows will be defined under `.gitlab/workflows`.
 
-If you want to deploy CI/CD for an initialized project (`Project-Only` MLOps Stacks initialization), you can manually run the `deploy-cicd.yml` workflow from the [Github Actions UI](https://docs.github.com/en/actions/using-workflows/manually-running-a-workflow?tool=webui) once the project code has been added to your main repo. 
+If you want to deploy CI/CD for an initialized project (`Project-Only` MLOps Stacks initialization), you can manually run the `deploy-cicd.yml` workflow from the [gitlab Actions UI](https://docs.gitlab.com/en/actions/using-workflows/manually-running-a-workflow?tool=webui) once the project code has been added to your main repo. 
 The workflow will create a pull request with all the changes against your main branch. Review and approve it to commit the files to deploy CI/CD for the project. 
 
 

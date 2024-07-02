@@ -13,7 +13,7 @@ ML resources, per the [MLOps setup guide](mlops-setup.md).
 
 ## Opening a pull request
 
-To push your updated ML code to production, [open a pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request
+To push your updated ML code to production, [open a pull request](https://docs.gitlab.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request
 ) against the remote Git repo containing the current project.
 
 **NOTE**: the default tests provided in this repo require that you use a pull
@@ -22,7 +22,7 @@ of the Git repo. Support for running tests against pull requests from repo forks
 is planned for the future.
 
 ## Viewing test status and debug logs
-Opening a pull request will trigger a[workflow](../.github/workflows/my_mlops_project-run-tests.yml) 
+Opening a pull request will trigger a[workflow](../.gitlab/workflows/my_mlops_project-run-tests.yml) 
 that runs unit and integration tests for the model training (and feature engineering if added) pipeline on Databricks against a test dataset.
 You can view test status and debug logs from the pull request UI, and push new commits to your pull request branch
 to address any test failures.
