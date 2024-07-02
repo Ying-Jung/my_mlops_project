@@ -12,11 +12,10 @@ on:
 
 defaults:
   run:
-    working-directory: default
+    working-directory: my_mlops_project
 
 env:
   DATABRICKS_TOKEN: ${{ secrets.STAGING_WORKSPACE_TOKEN }}
-
 
 jobs:
   ai_default:
