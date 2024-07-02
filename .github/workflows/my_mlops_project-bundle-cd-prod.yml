@@ -1,34 +1,38 @@
-# This GitHub workflow deploys Bundle resources (ML resource config and more)
-# defined under my_mlops_project/resources/*
-# and my_mlops_project/databricks.yml with prod deployment target configs,
-# when PRs are merged into the release branch
-name: Bundle Deployment for my_mlops_project Prod
+name: Bundle Deployment for my_mlops_project Staging
 
 on:
   push:
     branches:
-      - 'release'
+      - 'main'
   workflow_dispatch:
 
 defaults:
   run:
-    working-directory: ./my_mlops_project
+    working-directory: my_mlops_project
 
 env:
-  DATABRICKS_TOKEN: ${{ secrets.PROD_WORKSPACE_TOKEN }}
+  DATABRICKS_TOKEN: ${{ secrets.STAGING_WORKSPACE_TOKEN }}
 
 jobs:
-  prod:
-    concurrency: my_mlops_project-prod-bundle-job
+  ai_default:
+    concurrency: my_mlops_project-ai_default-bundle-job
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: databricks/setup-cli@v0.221.0
-      - name: Validate Bundle For Prod
+
+      - name: Create Schema if not exists
+        run: |
+          databricks sql warehouses list --output JSON | jq -r '.[0].id' | xargs -I {} databricks sql warehouses start --id {}
+          sleep 10 # Wait for the warehouse to start
+          databricks sql --warehouse-id $(databricks sql warehouses list --output JSON | jq -r '.[0].id') --execute "CREATE SCHEMA IF NOT EXISTS ai_default.my_mlops_project"
+
+      - name: Validate Bundle For ai_default
         id: validate
         run: |
-          databricks bundle validate -t prod
-      - name: Deploy Bundle to Prod
+          databricks bundle validate -t ai_default
+
+      - name: Deploy Bundle to ai_default
         id: deploy
         run: |
-          databricks bundle deploy -t prod
+          databricks bundle deploy -t ai_default

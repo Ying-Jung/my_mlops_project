@@ -41,7 +41,7 @@ dbutils.library.restartPython()
 
 # Notebook Environment
 dbutils.widgets.dropdown("env", "staging", ["staging", "prod"], "Environment Name")
-env = dbutils.widgets.get("env") 
+env = dbutils.widgets.get("env")
 
 # Path to the Hive-registered Delta table containing the training data.
 dbutils.widgets.text(
