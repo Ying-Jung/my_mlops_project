@@ -17,18 +17,19 @@ defaults:
 env:
   DATABRICKS_TOKEN: ${{ secrets.STAGING_WORKSPACE_TOKEN }}
 
+
 jobs:
-  staging:
-    concurrency: my_mlops_project-staging-bundle-job
+  ai_default:
+    concurrency: my_mlops_project-ai_default-bundle-job
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: databricks/setup-cli@v0.221.0
-      - name: Validate Bundle For Staging
+      - name: Validate Bundle For ai_default
         id: validate
         run: |
-          databricks bundle validate -t staging
-      - name: Deploy Bundle to Staging
+          databricks bundle validate -t ai_default
+      - name: Deploy Bundle to ai_default
         id: deploy
         run: |
-          databricks bundle deploy -t staging
+          databricks bundle deploy -t ai_default
