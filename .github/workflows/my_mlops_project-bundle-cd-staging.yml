@@ -15,15 +15,23 @@ env:
 
 jobs:
   ai_default:
-    concurrency: my_mlops_project-ai_default-bundle-job 
+    concurrency: my_mlops_project-ai_default-bundle-job
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: databricks/setup-cli@v0.221.0
+
+      - name: Create Schema if not exists
+        run: |
+          databricks sql warehouses list --output JSON | jq -r '.[0].id' | xargs -I {} databricks sql warehouses start --id {}
+          sleep 10 # Wait for the warehouse to start
+          databricks sql --warehouse-id $(databricks sql warehouses list --output JSON | jq -r '.[0].id') --execute "CREATE SCHEMA IF NOT EXISTS ai_default.my_mlops_project"
+
       - name: Validate Bundle For ai_default
         id: validate
         run: |
           databricks bundle validate -t ai_default
+
       - name: Deploy Bundle to ai_default
         id: deploy
         run: |
