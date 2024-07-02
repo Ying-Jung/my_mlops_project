@@ -31,4 +31,4 @@ jobs:
       - name: Deploy Bundle to Staging
         id: deploy
         run: |
-          databricks bundle deploy -t ai_default
+          databricks bundle deploy -t staging
