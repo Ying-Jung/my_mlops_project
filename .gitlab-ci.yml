@@ -1,0 +1,30 @@
+stages:
+  - validate
+  - deploy
+
+variables:
+  DATABRICKS_TOKEN: $STAGING_WORKSPACE_TOKEN
+
+default:
+  image: ubuntu:latest
+  before_script:
+    - apt-get update && apt-get install -y curl jq
+    - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+    - export NVM_DIR="$HOME/.nvm"
+    - [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    - nvm install --lts
+    - npm install -g databricks-cli
+
+validate_bundle:
+  stage: validate
+  script:
+    - databricks bundle validate -t ai_default
+  only:
+    - main
+
+deploy_bundle:
+  stage: deploy
+  script:
+    - databricks bundle deploy -t ai_default
+  only:
+    - main
