@@ -28,8 +28,18 @@ targets:
       # TODO: add dev workspace URL
       host:
 
+
+
   ai_default:
     workspace:
       host: https://dbc-d99df79b-a5be.cloud.databricks.com
-    schema: ai_default.default
+
+  ai_default:
+    workspace:
+      host: https://dbc-d99df79b-a5be.cloud.databricks.com
+
+  ai_default:
+    workspace:
+      host: https://dbc-d99df79b-a5be.cloud.databricks.com
+
 
